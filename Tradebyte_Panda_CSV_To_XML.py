@@ -12,7 +12,7 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
     csv_reader = csv.DictReader(csv_file)
 
     # Create the XML root element
-    root = ET.Element("TBCATALOG", version="1.4", creation=current_timestamp)
+    root = ET.Element("TBCATALOG", version="1.3", creation=current_timestamp)
 
     # Create PRODUCTDATA and PRODUCT elements
     product_data = ET.SubElement(root, "PRODUCTDATA", type="full")
@@ -137,7 +137,7 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
             tree = ET.ElementTree(root)
 
             # Append the date to the XML file name
-            current_date = datetime.now().strftime("%d%m%Y")
+            current_date = datetime.now().strftime("%d%m%Y%H%M%S")
             xml_file_name = f"Panda_{current_date}.xml"
 
             # Write the resulting XML to a file
