@@ -9,7 +9,6 @@ Before using this script, ensure you have the following:
 - Python installed on your system (Python 3.x recommended). You can download Python from the official website: [Python Downloads](https://www.python.org/downloads/).
 - Necessary Python modules, including `csv`, `time` and `xml.etree.ElementTree`, which are typically included with Python.
 - A source CSV file containing the data to be transformed `Attached is one, but you can request a sample from your Tradebyte Solution Delivery Manager during the integration`.
-- The XML schema for the destination XML object, which defines the structure of the output XML.
 
 ## Usage
 
