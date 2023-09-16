@@ -47,6 +47,8 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
         p_component = ET.SubElement(p_component_data, "P_COMPONENT", identifier="key", key="Materialzusammensetzung")
         value = ET.SubElement(p_component, "VALUE", **{"xml:lang": "de-DE"})
         value.text = row["p_comp[material]"]
+        value = ET.SubElement(p_component, "VALUE", **{"xml:lang": "en-US"})
+        value.text = row["<en>p_comp[material]"]
 
         # Create P_TAGS element
         p_tags = ET.SubElement(product, "P_TAGS")
