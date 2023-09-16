@@ -6,7 +6,7 @@ This Python script is designed to transform CSV data into an XML format based on
 
 Before using this script, ensure you have the following:
 
-- Python installed on your system (Python 3.x recommended).
+- Python installed on your system (Python 3.x recommended). You can download Python from the official website: [Python Downloads](https://www.python.org/downloads/).
 - Necessary Python modules, including `csv` and `xml.etree.ElementTree`, which are typically included with Python.
 - A source CSV file containing the data to be transformed.
 - The XML schema for the destination XML object, which defines the structure of the output XML.
@@ -25,21 +25,31 @@ Before using this script, ensure you have the following:
 
 4. The script will read the source CSV file, transform the data, and generate an XML file named `destination.xml` in the same directory.
 
-## Example
+## CSV Source Format
 
-Here's a simplified example of the source CSV data:
+The provided CSV source format includes the following columns:
 
-```csv
-p_brand,p_name,p_text,p_comp[material],p_bullet{0},a_active,a_comp[color],a_comp[size]
-BrandA,ProductA,DescriptionA,MaterialA,Bullet1,1,Red,Large
-BrandB,ProductB,DescriptionB,MaterialB,Bullet2,0,Blue,Medium
-```
+- p_brand
+- p_name
+- p_text
+- p_supplement
+- ...
+- a_delivery
+- a_shipping_type
+- a_intrastat
+- a_media[image]{0}
+- a_media[image]{1}
+- a_active
+- a_stock
+
+The script reads this data and maps it to corresponding XML elements.
+
 
 And the corresponding simplified destination XML format:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<TBCATALOG version="1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://api.trade-server.net/schema/all_in_one/tb-cat_1_4_import.xsd">
+<TBCATALOG version="1.4" >
   <PRODUCTDATA type="full">
     <PRODUCT>
       <P_NR>ProductA</P_NR>
