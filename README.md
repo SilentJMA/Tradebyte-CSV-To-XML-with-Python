@@ -15,7 +15,7 @@ Before using this script, ensure you have the following:
 
 1. Place your source CSV file in the same directory as the Python script, or specify the file path accordingly in the code.
    ```bash
-   with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
+   with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file:
    ```
 
 3. Modify the code as needed to match your specific CSV data structure and the destination XML schema. Key elements to modify include field names, XML tags, and data mapping.
