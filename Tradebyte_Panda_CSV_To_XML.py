@@ -1,12 +1,14 @@
 import csv
 import xml.etree.ElementTree as ET
 import time
+from datetime import datetime
+
 
 # Get the current Unix timestamp
 current_timestamp = str(int(time.time()))
 
 # Read the source CSV data
-with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
+with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file:
     csv_reader = csv.DictReader(csv_file)
 
     # Create the XML root element
@@ -17,7 +19,7 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
     product = ET.SubElement(product_data, "PRODUCT")
 
     for row in csv_reader:
-        # Create P_NR element
+        # Create unique P_NR product number of the merchant  element
         p_nr = ET.SubElement(product, "P_NR")
         p_nr.text = row["p_nr"]
 
@@ -36,9 +38,10 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
         value.text = row["<en>p_text"]
 
         # Create P_BRAND element
-        p_brand = ET.SubElement(product, "P_BRAND", identifier="name", key="p_brand")
+        p_brand = ET.SubElement(product, "P_BRAND", identifier="name", key=row["p_brand"])
 
-        
+#Missing keywords
+
         # Create P_COMPONENTDATA element
         p_component_data = ET.SubElement(product, "P_COMPONENTDATA")
         p_component = ET.SubElement(p_component_data, "P_COMPONENT", identifier="key", key="Materialzusammensetzung")
@@ -95,6 +98,8 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
             a_variant_color = ET.SubElement(a_variant_data, "A_VARIANT", identifier="key", key="Farbe")
             value = ET.SubElement(a_variant_color, "VALUE", **{"xml:lang": "de-DE"})
             value.text = row["a_comp[color]"]
+            value = ET.SubElement(a_variant_color, "VALUE", **{"xml:lang": "en-US"})
+            value.text = row["<en>a_comp[color]"]
 
             a_variant_size = ET.SubElement(a_variant_data, "A_VARIANT", identifier="key", key="Größe")
             value = ET.SubElement(a_variant_size, "VALUE", **{"xml:lang": "de-DE"})
@@ -102,9 +107,15 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
 
             # Create A_PRICEDATA element
             a_price_data = ET.SubElement(article, "A_PRICEDATA")
-            a_price = ET.SubElement(a_price_data, "A_PRICE", channel="zade")
+
+            # Zalando.de sign is zade and channel id is 30 you can find the channels information in Tradebyte info center Manuals > Channel-specific Manuals > Data maintenance for Zalando > Quick Start Guide
+            a_price = ET.SubElement(a_price_data, "A_PRICE", channel="zade", currency="EUR")
             a_vk = ET.SubElement(a_price, "A_VK")
             a_vk.text = row["a_vk[zade]"]
+            a_vk_old = ET.SubElement(a_price, "A_VK_OLD")
+            a_vk_old.text = row["a_vk_old[zade]"]
+            a_uvp = ET.SubElement(a_price, "A_UVP")
+            a_uvp.text = row["a_uvp[zade]"]
 
             # Create A_MEDIADATA element
             a_media_data = ET.SubElement(article, "A_MEDIADATA")
@@ -122,4 +133,10 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
 
             # Create an ElementTree from the root and save it to a file
             tree = ET.ElementTree(root)
-            tree.write('Panda.xml', encoding='utf-8', xml_declaration=True)
+
+            # Append the date to the XML file name
+            current_date = datetime.now().strftime("%d%m%Y")
+            xml_file_name = f"Panda_{current_date}.xml"
+
+            # Write the resulting XML to a file
+            tree.write(xml_file_name, encoding="utf-8", xml_declaration=True)
