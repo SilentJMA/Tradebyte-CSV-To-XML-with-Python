@@ -14,16 +14,19 @@ Before using this script, ensure you have the following:
 ## Usage
 
 1. Place your source CSV file in the same directory as the Python script, or specify the file path accordingly in the code.
-
-2. Modify the code as needed to match your specific CSV data structure and the destination XML schema. Key elements to modify include field names, XML tags, and data mapping.
-
-3. Run the Python script using the following command:
-
    ```bash
-   python csv_to_xml.py
+   with open('source1.csv', mode='r', newline='', encoding='utf-8') as csv_file:
    ```
 
-4. The script will read the source CSV file, transform the data, and generate an XML file named `destination.xml` in the same directory.
+3. Modify the code as needed to match your specific CSV data structure and the destination XML schema. Key elements to modify include field names, XML tags, and data mapping.
+
+4. Run the Python script using the following command:
+
+   ```bash
+   python Tradebyte_Panda_CSV_To_XML.py
+   ```
+
+5. The script will read the source CSV file, transform the data, and generate an XML file named `Panda.xml` in the same directory.
 
 ## CSV Source Format
 
