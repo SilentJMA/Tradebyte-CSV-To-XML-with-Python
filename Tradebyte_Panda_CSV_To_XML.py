@@ -23,10 +23,11 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
         p_nr = ET.SubElement(product, "P_NR")
         p_nr.text = row["p_nr"]
 
-        # Create P_NAME element
+        # Create P_NAME element German Language
         p_name = ET.SubElement(product, "P_NAME")
         value = ET.SubElement(p_name, "VALUE", **{"xml:lang": "de-DE"})
         value.text = row["p_name"]
+        # Create P_NAME element English Language
         value = ET.SubElement(p_name, "VALUE", **{"xml:lang": "en-US"})
         value.text = row["<en>p_name"]
 
@@ -40,7 +41,20 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
         # Create P_BRAND element
         p_brand = ET.SubElement(product, "P_BRAND", identifier="name", key=row["p_brand"])
 
-#Missing keywords
+        #Create Keywords
+
+        keyword_data = ET.SubElement(product, "P_KEYWORDS")
+
+        ##another output
+        for keyword in row["p_keywords"].split(","):
+
+            keyword_element = ET.SubElement(keyword_data, "P_KEYWORD")
+
+            value_element = ET.SubElement(keyword_element, "VALUE", **{"xml:lang": "de-DE"})
+            value_element.text = keyword
+
+            value_element = ET.SubElement(keyword_element, "VALUE", **{"xml:lang": "en-US"})
+            value_element.text = row["<en>p_keywords"]
 
         # Create P_COMPONENTDATA element
         p_component_data = ET.SubElement(product, "P_COMPONENTDATA")
