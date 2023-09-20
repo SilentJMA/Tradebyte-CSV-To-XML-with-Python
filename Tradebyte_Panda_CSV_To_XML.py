@@ -45,7 +45,7 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
 
         keyword_data = ET.SubElement(product, "P_KEYWORDS")
 
-        ##another output
+        ##another output but still needs to be refined
         for keyword in row["p_keywords"].split(","):
 
             keyword_element = ET.SubElement(keyword_data, "P_KEYWORD")
