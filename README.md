@@ -1,6 +1,7 @@
 # Tradebyte Panda CSV to XML Data Transformation
 
 This Python script is designed to transform CSV data into an XML format based on a specific XML schema. It reads data from a source CSV file and generates an XML file structured according to the format of the destination XML object.
+More information about the xml structure can be found at the [TB.IO homepage](https://www.tradebyte.io/documentation/examples-for-product-and-order-data/).
 
 ## Prerequisites
 
