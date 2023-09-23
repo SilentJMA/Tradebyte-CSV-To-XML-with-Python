@@ -2,13 +2,24 @@ import csv
 import xml.etree.ElementTree as ET
 import time
 from datetime import datetime
+import os
 
+# Define input and output folder paths
+input_folder = 'input'
+output_folder = 'output'
+
+# Ensure the output folder exists
+os.makedirs(output_folder, exist_ok=True)
 
 # Get the current Unix timestamp
 current_timestamp = str(int(time.time()))
 
+# Build the input and output file paths
+input_csv_file = os.path.join(input_folder, 'source1.csv')
+output_xml_file = os.path.join(output_folder, f'Panda_{current_timestamp}.xml')
+
 # Read the source CSV data
-with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file:
+with open(input_csv_file, mode='r', newline='', encoding='utf-8-sig') as csv_file:
     csv_reader = csv.DictReader(csv_file)
 
     # Create the XML root element
@@ -43,18 +54,24 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
 
         #Create Keywords
 
-        keyword_data = ET.SubElement(product, "P_KEYWORDS")
+        p_keywords = ET.SubElement(product, "P_KEYWORDS")
 
-        ##another output but still needs to be refined
+        # Split the 'en-US' keywords
+        en_us_keywords = row["<en>p_keywords"].split(",")
+
+        # Split the 'p_keywords' by comma and iterate through keywords
         for keyword in row["p_keywords"].split(","):
+            keyword_element = ET.SubElement(p_keywords, "P_KEYWORD")
 
-            keyword_element = ET.SubElement(keyword_data, "P_KEYWORD")
+            # Add the 'de-DE' value element for the current keyword
+            value_element_de = ET.SubElement(keyword_element, "VALUE", **{"xml:lang": "de-DE"})
+            value_element_de.text = keyword.strip()  # Remove leading/trailing spaces
 
-            value_element = ET.SubElement(keyword_element, "VALUE", **{"xml:lang": "de-DE"})
-            value_element.text = keyword
-
-            value_element = ET.SubElement(keyword_element, "VALUE", **{"xml:lang": "en-US"})
-            value_element.text = row["<en>p_keywords"]
+            # Check if there are corresponding 'en-US' keywords
+            if en_us_keywords:
+                # Add the 'en-US' value element for the current keyword
+                value_element_en = ET.SubElement(keyword_element, "VALUE", **{"xml:lang": "en-US"})
+                value_element_en.text = en_us_keywords.pop(0).strip()
 
         # Create P_COMPONENTDATA element
         p_component_data = ET.SubElement(product, "P_COMPONENTDATA")
@@ -147,12 +164,8 @@ with open('source1.csv', mode='r', newline='', encoding='utf-8-sig') as csv_file
             a_delivery_time = ET.SubElement(article, "A_DELIVERY_TIME")
             a_delivery_time.text = row["a_delivery"]
 
-            # Create an ElementTree from the root and save it to a file
+            # Create an ElementTree from the root
             tree = ET.ElementTree(root)
 
-            # Append the date to the XML file name
-            current_date = datetime.now().strftime("%d%m%Y%H%M%S")
-            xml_file_name = f"Panda_{current_date}.xml"
-
-            # Write the resulting XML to a file
-            tree.write(xml_file_name, encoding="utf-8", xml_declaration=True)
+            # Write the resulting XML to the output folder
+            tree.write(output_xml_file, encoding="utf-8", xml_declaration=True)
